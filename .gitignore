@@ -1,0 +1,24 @@
+﻿################################################################################
+# 이 .gitignore 파일은 Microsoft(R) Visual Studio에서 자동으로 만들어졌습니다.
+################################################################################
+
+*.tlog
+*.sln
+*.user
+*.filters
+*.vcxproj
+/Project1/Project1/Debug/소스.obj
+*.pdb
+*.idb
+*.log
+*.ilk
+*.recipe
+*.exe
+*.opendb
+*.db-wal
+*.db-shm
+*.db
+*.suo
+*.ipch
+*.json
+*.sqlite
