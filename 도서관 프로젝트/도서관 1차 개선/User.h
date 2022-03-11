@@ -9,11 +9,11 @@ using std::string;
 class User {
 public:
 	User() 
-		:name{ }, phonenum{ }, usernum{ }, borrowstat{ },
+		:ID{ }, Password{ }, name{ }, phonenum{ }, usernum{ }, borrowstat{ },
 		booknum{ } {
 	}
-	User(string name, string phonenum, int usernum, bool borrowstat=false, int booknum=-1)
-		:name{ name }, phonenum{ phonenum }, usernum{ usernum }, borrowstat{ borrowstat }, 
+	User(string id, string pw, string name, string phonenum, int usernum, bool borrowstat=false, int booknum=-1)
+		:ID{ id }, Password{ pw }, name{ name }, phonenum{ phonenum }, usernum{ usernum }, borrowstat{ borrowstat },
 		booknum{ booknum }{
 	}
 
@@ -51,6 +51,8 @@ public:
 private:
 	string name;
 	string phonenum;
+	string ID;
+	string Password;
 	int usernum;
 	bool borrowstat;
 	int booknum;

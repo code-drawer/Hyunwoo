@@ -16,7 +16,7 @@ public:
 		: booklist{ }, userlist{ } {
 	}
 	도서관(Book booklist[20], User userlist[10] = nullptr) {
-		
+
 	}
 
 	// 책 추가
@@ -98,7 +98,7 @@ public:
 		cout << "유저의 이름이 같지 않습니다." << endl;
 		return;
 	}
-	
+
 	void returnbook(string username, string bookname) {
 		for (auto& userElem : userlist) {
 			if (userElem.get_username() == username) {
@@ -116,6 +116,14 @@ public:
 		}
 		cout << "유저의 이름이 같지 않습니다." << endl;
 		return;
+	}
+
+	vector<Book>& getBookList() {
+		return booklist;
+	}
+
+	vector<User>& getUserList() {
+		return userlist;
 	}
 
 private:
