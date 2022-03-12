@@ -17,8 +17,20 @@ public:
 		booknum{ booknum }{
 	}
 
+	string get_userid() {
+		return ID;
+	}
+
+	string get_userpassword() {
+		return Password;
+	}
+
 	string get_username() {
 		return name;
+	}
+
+	string get_userphonenum() {
+		return phonenum;
 	}
 
 	bool get_borrowstat() {

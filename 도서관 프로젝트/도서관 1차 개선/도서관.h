@@ -80,7 +80,7 @@ public:
 		}
 	}
 
-	void borrow(string username, string bookname) {
+	bool borrow(string username, string bookname) {
 		for (auto& userElem : userlist) {
 			if (userElem.get_username() == username) {
 				for (auto& bookElem : booklist) {
@@ -88,18 +88,18 @@ public:
 						userElem.set_booknum(bookElem.get_booknum());
 						userElem.set_borrowstat();
 						cout << "선택한 책이 정상적으로 대출되었습니다." << endl;
-						return;
+						return true;
 					}
 				}
 				cout << "입력한 책이 도서관에 없습니다." << endl;
-				return;
+				return false;
 			}
 		}
 		cout << "유저의 이름이 같지 않습니다." << endl;
-		return;
+		return false;
 	}
 
-	void returnbook(string username, string bookname) {
+	bool returnbook(string username, string bookname) {
 		for (auto& userElem : userlist) {
 			if (userElem.get_username() == username) {
 				for (auto& bookElem : booklist) {
@@ -107,15 +107,15 @@ public:
 						userElem.set_booknum(-1);
 						userElem.set_borrowstat();
 						cout << "선택한 책이 정상적으로 반납되었습니다." << endl;
-						return;
+						return true;
 					}
 				}
 				cout << "해당 책을 대출하지 않았습니다." << endl;
-				return;
+				return false;
 			}
 		}
 		cout << "유저의 이름이 같지 않습니다." << endl;
-		return;
+		return false;
 	}
 
 	vector<Book>& getBookList() {

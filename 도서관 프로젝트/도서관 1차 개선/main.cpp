@@ -4,18 +4,19 @@
 #include <string>
 using namespace std;
 
-Book book1{ "어린왕자","생텍쥐페리","동화",1000 };
-Book book2{ "정의란 무엇인가","마이클 샌델","인문학",2000 };
-Book book3{ "십자군 이야기","시오노 나나미","인문학",2001 };
-Book book4{ "일반물리학","데이비드 홀리데이","과학/공학",3000 };
-Book book5{ "신데렐라","샤를 페로","동화",1001 };
-Book book6{ "코스모스","칼 세이건","과학/공학",3001 };
-Book book7{ "메타버스","김상균","과학/공학",3002 };
-Book book8{ "종의 기원","찰스 로버트 다윈","과학/공학",3003 };
-Book book9{ "오디세이아","호메로스","소설",4000 };
+Book book1{ "어린왕자","생텍쥐페리","동화",100 };
+Book book2{ "정의란 무엇인가","마이클 샌델","인문학",200 };
+Book book3{ "십자군 이야기","시오노 나나미","인문학",201 };
+Book book4{ "일반물리학","데이비드 홀리데이","과학/공학",300 };
+Book book5{ "신데렐라","샤를 페로","동화",101 };
+Book book6{ "코스모스","칼 세이건","과학/공학",301 };
+Book book7{ "메타버스","김상균","과학/공학",302 };
+Book book8{ "종의 기원","찰스 로버트 다윈","과학/공학",303 };
+Book book9{ "오디세이아","호메로스","소설",400 };
 
 int main() {
 	locale::global(locale{ "Korean" });
+	도서관 중앙도서관{}; // 중앙도서관 객체 생성
 	// wide file stream: 2바이트 이상의 문자도 읽을 수 있는 file stream
 	fstream file;
 	file.open("./user.txt", ios::in);
@@ -40,31 +41,32 @@ int main() {
 			current = line.find(" ", previous);
 		}
 		temp.push_back(line.substr(previous, current - previous));
+		if (temp.size() == 7)
+			중앙도서관.adduser(User{ temp[0],temp[1],temp[2],temp[3],stoi(temp[4]),bool(stoi(temp[5])),stoi(temp[6]) });
+		else
+			중앙도서관.adduser(User{ temp[0],temp[1],temp[2],temp[3],stoi(temp[4]) });
+		temp.clear();
+		previous = 0;
 	}
 
 	file.close();
-
-	도서관 중앙도서관{}; // 중앙도서관 객체 생성
-
-	중앙도서관.adduser(User{ temp[0],temp[1],temp[2],temp[3],stoi(temp[4]) });
-
-
-	temp.clear();
 
 	current = 0;
 	previous = 0;
 	file.open("./book.txt", ios::in);
 	while (getline(file, line)) {
-		current = line.find(' ');
+		current = line.find(',');
 		while (current != string::npos) {
 			temp.push_back(line.substr(previous, current - previous));
 			previous = current + 1;
-			current = line.find(" ", previous);
+			current = line.find(",", previous);
 		}
 		temp.push_back(line.substr(previous, current - previous));
+		중앙도서관.addbook(Book{ temp[0],temp[1],temp[2],stoi(temp[3]) });
+		temp.clear();
+		previous = 0;
 	}
 
-	중앙도서관.addbook(Book{ temp[0],temp[1],temp[2],stoi(temp[3]) });
 	file.close();
 
 	while (true) {
@@ -85,15 +87,19 @@ int main() {
 
 		int choice(0);
 		cin >> choice;
+		cin.ignore();
 		switch (choice) {
 		case 1: // 도서목록 확인
 			중앙도서관.displayBook();
 			cout << endl;
 			break;
 		case 2: {// 도서대출
-			cout << "유저이름과 책이름을 순서대로 입력해주세요" << endl;
-			cin >> username >> bookname;
-			중앙도서관.borrow(username, bookname);
+			cout << "유저이름을 입력해주세요" << endl;
+			getline(cin, username);
+			cout << "책이름을 입력해주세요" << endl;
+			getline(cin, bookname);
+			if (not 중앙도서관.borrow(username, bookname))
+				break;
 			cout << endl;
 
 			file.open("./user.txt", ios::out | ios::app);
@@ -105,10 +111,19 @@ int main() {
 			break;
 		}
 		case 3: // 도서반납
-			cout << "유저이름과 책이름을 순서대로 입력해주세요" << endl;
-			cin >> username >> bookname;
-			중앙도서관.returnbook(username, bookname);
+			cout << "유저이름을 입력해주세요" << endl;
+			getline(cin, username);
+			cout << "책이름을 입력해주세요" << endl;
+			getline(cin, bookname);
+			if (not 중앙도서관.returnbook(username, bookname))
+				break;
 			cout << endl;
+
+			file.open("./user.txt", ios::out);
+			for (auto& elem : 중앙도서관.getUserList())
+				file << elem.get_userid() << ' ' << elem.get_userpassword() << ' ' << elem.get_username() << ' ' <<
+				elem.get_userphonenum() << ' ' << elem.get_usernum() << endl;
+			file.close();
 			break;
 		case 4: { //도서추가
 			cout << "책이름과 저자, 장르,책번호를 순서대로 입력해주세요" << endl;
